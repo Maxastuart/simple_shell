@@ -1,0 +1,19 @@
+.TH HSH 1
+.SH NAME
+.B HSH
+- command interpreter (shell)
+.SH SYNOPSIS
+Coming Soon
+.SH DESCRIPTION
+Recreate shell for Holberton School
+.SH EXIT STATUS
+Errors that are detected by the shell, such as a syntax error, will cause the
+shell to exit with a non-zero exit status. If the shell is not an interactive
+shell, the execution of the shell file will be aborted. Otherwise the shell will
+return the exit status of the last command executed, or if the exit builtin is
+used with a numeric argument, it will return the argument.
+.SH ARGUMENTS
+Coming Soon
+.SH AUTHORS
+Max Stuart, Michael Schechner, Adriel Tolentino
+.TP
