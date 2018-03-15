@@ -12,6 +12,8 @@ shell to exit with a non-zero exit status. If the shell is not an interactive
 shell, the execution of the shell file will be aborted. Otherwise the shell will
 return the exit status of the last command executed, or if the exit builtin is
 used with a numeric argument, it will return the argument.
+.SH ENVIRONMENT
+PATH The default search path for executables.
 .SH ARGUMENTS
 Coming Soon
 .SH AUTHORS
