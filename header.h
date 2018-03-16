@@ -3,7 +3,17 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <...>
+#include <sys/types.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <signal.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 
 void type_prompt(void);
 
