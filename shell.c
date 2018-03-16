@@ -22,18 +22,17 @@ void read_cmd(void) /* (char *cmd, char **param) */
 
 	gline = getline(&lineptr, &n, stdin);
 	if (gline == -1)
+	{
+		free(lineptr);
 		exit(EXIT_FAILURE);
-	printf("nb char: %d\n", n);
-	char *tmp = lineptr;
-	int i = 0;
-	while(i < n) {
-		printf("char: %c %x \n", tmp, tmp);
-		tmp = tmp + 1;
-		i ++;
 	}
 	written = write(STDOUT_FILENO, lineptr, n);
 	if (written == -1)
+	{
+		free(lineptr);
 		exit(EXIT_FAILURE);
+	}
+	free(lineptr);
 }
 
 /**
