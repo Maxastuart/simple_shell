@@ -17,7 +17,7 @@ void type_prompt(void)
  */
 void read_cmd(void) /* (char *cmd, char **param) */
 {
-	char *lineptr = NULL, *tok[100];
+	char *lineptr, *tok[100];
 	size_t gline, written, n = 0;
 	int i = 0;
 
@@ -42,6 +42,17 @@ void read_cmd(void) /* (char *cmd, char **param) */
 		i++;
 	}
 
+	char *envp[] = {
+		"PATH=/bin:usr/bin",
+	};
+
+	execve(tok[0], &tok[0], envp);
+
+	if (tok[0] != *envp)
+	{
+		printf("Command not found\n");
+	}
+
 /*	i = 0;
 	while (tok[i] != NULL)
 	{
@@ -60,7 +71,9 @@ void read_cmd(void) /* (char *cmd, char **param) */
 int main(void)
 {
 	/* char cmd[100], *param[100]; */
-
+	while (1)
+	{
 	type_prompt();
 	read_cmd(); /* (cmd, param); */
+	}
 }
