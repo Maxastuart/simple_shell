@@ -79,10 +79,10 @@ int main(void)
 			strcpy(cmd, "/bin/");
 			strcat(cmd, tcmd);
 			execve(cmd, param, envp);
-		}
-		if (cmd != *envp)
-		{
-			printf("Command not found\n");
+			if (cmd != *envp)
+			{
+				printf("Command not found\n");
+			}
 		}
 	}
 }
