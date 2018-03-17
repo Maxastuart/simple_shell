@@ -83,6 +83,7 @@ int main(void)
 			{
 				printf("Command not found\n");
 			}
+			break;
 		}
 	}
 }
