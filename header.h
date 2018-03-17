@@ -17,6 +17,6 @@
 
 void type_prompt(void);
 
-void read_cmd(void); /* char *cmd, char **param); */
+void read_cmd(char *cmd, char **param);
 
 #endif /* __HEADER__ */
