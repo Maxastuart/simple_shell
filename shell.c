@@ -15,7 +15,7 @@ void type_prompt(void)
  * @cmd: text string of command name
  * @param: array of text strings of parameters
  */
-void read_cmd(char *cmd, char **param)
+int read_cmd(char *cmd, char **param)
 {
 	char *lineptr, *tok[100];
 	size_t gline, written, n = 0;
@@ -27,6 +27,8 @@ void read_cmd(char *cmd, char **param)
 		free(lineptr);
 		exit(EXIT_FAILURE);
 	}
+	if (lineptr == "\n")
+		return (-1);
 	written = write(STDOUT_FILENO, lineptr, n);
 	if (written == -1)
 	{
@@ -48,6 +50,7 @@ void read_cmd(char *cmd, char **param)
 	param[j] = NULL;
 
 	free(lineptr);
+	return (0);
 }
 
 /**
@@ -58,6 +61,7 @@ void read_cmd(char *cmd, char **param)
 int main(void)
 {
 	pid_t hmm;
+	int readn;
 	char cmd[100], tcmd[100], *param[100];
 	char *envp[] = {
 		"PATH=/bin:usr/bin",
@@ -66,24 +70,28 @@ int main(void)
 	while (1)
 	{
 		type_prompt();
-		read_cmd(tcmd, param);
-
-		if (fork() != 0)
-		{
-			hmm = wait(NULL);
-			if (hmm == -1)
-				return (-1);
-		}
+		readn = read_cmd(tcmd, param);
+		if (readn == -1)
+			;
 		else
-		{ /* CHANGE ME TO _STRCPY etc. */
-			strcpy(cmd, "/bin/");
-			strcat(cmd, tcmd);
-			execve(cmd, param, envp);
-			if (cmd != *envp)
+		{
+			if (fork() != 0)
 			{
-				printf("Command not found\n");
+				hmm = wait(NULL);
+				if (hmm == -1)
+					return (-1);
 			}
-			break;
+			else
+			{  /* CHANGE ME TO _STRCPY ___etc. */
+				strcpy(cmd, "/bin/");
+				strcat(cmd, tcmd);
+				execve(cmd, param, envp);
+				if (cmd != *envp)
+				{
+					printf("Command not found\n");
+				}
+				break;
+			}
 		}
 	}
 }
