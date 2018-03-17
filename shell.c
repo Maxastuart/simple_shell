@@ -17,8 +17,9 @@ void type_prompt(void)
  */
 void read_cmd(void) /* (char *cmd, char **param) */
 {
-	char *lineptr = NULL;
+	char *lineptr = NULL, *tok[100];
 	size_t gline, written, n = 0;
+	int i = 0;
 
 	gline = getline(&lineptr, &n, stdin);
 	if (gline == -1)
@@ -32,6 +33,22 @@ void read_cmd(void) /* (char *cmd, char **param) */
 		free(lineptr);
 		exit(EXIT_FAILURE);
 	}
+
+	tok[i] = strtok(lineptr, " \n");
+	i++;
+	while (tok[i] != NULL)
+	{
+		tok[i] = strtok(NULL, " \n");
+		i++;
+	}
+
+/*	i = 0;
+	while (tok[i] != NULL)
+	{
+		printf("%s\n", tok[i]);
+		i++;
+	}
+*/
 	free(lineptr);
 }
 
