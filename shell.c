@@ -1,4 +1,4 @@
-#include "header.h"
+#include "2header.h"
 
 /**
  * type_prompt - displays a prompt asking the user to input a command
@@ -15,33 +15,48 @@ void type_prompt(void)
  * @cmd: text string of command name
  * @param: array of text strings of parameters
  */
-int read_cmd(char *cmd, char **param)
+void read_cmd(char *cmd, char **param)
 {
-	char *lineptr, *tok[100];
+	char *lineptr, **tok, *tmp, *token;
 	size_t gline, written, n = 0;
-	int i = 0, j;
+	int i = 0, j = 0;
 
+	tok = malloc(64 * sizeof(char *));
+	if (tok == NULL)
+	{
+		exit(EXIT_FAILURE);
+	}
+	tmp = malloc(64 * sizeof(char *));
+	if (tmp == NULL)
+	{
+		free(tok);
+		exit(EXIT_FAILURE);
+	}
 	gline = getline(&lineptr, &n, stdin);
 	if (gline == -1)
 	{
 		free(lineptr);
 		exit(EXIT_FAILURE);
 	}
-	if (lineptr == "\n")
-		return (-1);
-	written = write(STDOUT_FILENO, lineptr, n);
+/*	written = write(STDOUT_FILENO, lineptr, n);
 	if (written == -1)
 	{
 		free(lineptr);
 		exit(EXIT_FAILURE);
 	}
-
-	tok[i] = strtok(lineptr, " \n");
-	i++;
-	while (tok[i] != NULL)
+*/	while (lineptr[j] != '\n')
 	{
-		tok[i] = strtok(NULL, " \n");
+		tmp[j] = lineptr[j];
+		j++;
+	}
+	tmp[j] = '\0';
+
+	token = strtok(tmp, " \n");
+	while (token != NULL)
+	{
+		tok[i] = token;
 		i++;
+		token = strtok(NULL, " \n");
 	}
 
 	strcpy(cmd, tok[0]); /* set command and parameters from input tokens */
@@ -49,8 +64,9 @@ int read_cmd(char *cmd, char **param)
 		param[j] = tok[j];
 	param[j] = NULL;
 
+	free(tok);
+	free(tmp);
 	free(lineptr);
-	return (0);
 }
 
 /**
@@ -61,7 +77,6 @@ int read_cmd(char *cmd, char **param)
 int main(void)
 {
 	pid_t hmm;
-	int readn;
 	char cmd[100], tcmd[100], *param[100];
 	char *envp[] = {
 		"PATH=/bin:usr/bin",
@@ -70,27 +85,22 @@ int main(void)
 	while (1)
 	{
 		type_prompt();
-		readn = read_cmd(tcmd, param);
-		if (readn == -1)
-			;
-		else
+		read_cmd(tcmd, param);
+
+		if (fork() != 0)
 		{
-			if (fork() != 0)
+			hmm = wait(NULL);
+			if (hmm == -1)
+				return (-1);
+		}
+		else
+		{ /* CHANGE ME TO _STRCPY etc. */
+			strcpy(cmd, "/bin/ls");
+			strcpy(cmd, tcmd);
+			execve(cmd, param, envp);
+			if (cmd != *envp)
 			{
-				hmm = wait(NULL);
-				if (hmm == -1)
-					return (-1);
-			}
-			else
-			{  /* CHANGE ME TO _STRCPY ___etc. */
-				strcpy(cmd, "/bin/");
-				strcat(cmd, tcmd);
-				execve(cmd, param, envp);
-				if (cmd != *envp)
-				{
-					printf("Command not found\n");
-				}
-				break;
+				printf("Command not found\n");
 			}
 		}
 	}
