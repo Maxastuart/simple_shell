@@ -18,7 +18,8 @@ void type_prompt(void)
 void read_cmd(char *cmd, char **param)
 {
 	char *lineptr, **tok, *tmp, *token;
-	size_t gline, written, n = 0;
+	ssize_t gline;
+	size_t n = 0;
 	int i = 0, j = 0;
 
 	tok = malloc(64 * sizeof(char *));
@@ -38,13 +39,7 @@ void read_cmd(char *cmd, char **param)
 		free(lineptr);
 		exit(EXIT_FAILURE);
 	}
-/*	written = write(STDOUT_FILENO, lineptr, n);
-	if (written == -1)
-	{
-		free(lineptr);
-		exit(EXIT_FAILURE);
-	}
-*/	while (lineptr[j] != '\n')
+	while (lineptr[j] != '\n')
 	{
 		tmp[j] = lineptr[j];
 		j++;
@@ -58,7 +53,6 @@ void read_cmd(char *cmd, char **param)
 		i++;
 		token = strtok(NULL, " \n");
 	}
-
 	strcpy(cmd, tok[0]); /* set command and parameters from input tokens */
 	for (j = 0; j < i; j++)
 		param[j] = tok[j];
