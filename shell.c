@@ -95,8 +95,9 @@ int main(void)
 		}
 		else
 		{ /* CHANGE ME TO _STRCPY etc. */
-			strcpy(cmd, "/bin/ls");
-			strcpy(cmd, tcmd);
+			if (tcmd[0] != '/')
+				strcpy(cmd, "/bin/");
+			strcat(cmd, tcmd);
 			execve(cmd, param, envp);
 			if (cmd != *envp)
 			{
