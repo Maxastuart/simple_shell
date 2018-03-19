@@ -1,4 +1,4 @@
-#include "2header.h"
+#include "header.h"
 
 /**
  * type_prompt - displays a prompt asking the user to input a command
