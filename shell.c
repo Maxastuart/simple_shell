@@ -76,16 +76,20 @@ char *find_cmd(char *tcmd)
 	int i = 0;
 	char *path, *paths[256];
 
-	// finds environment variable PATHs in system
+	/* finds environment variable PATHs in system */
 	while (environ[i])
 		if (strncmp(environ[i], "PATH=", 5) == 0)
 			path = (environ[i] + 5);
 	i = 0;
-	// parses paths into seperate tokens
-	while ((paths[i] = strtok(path, ":")))
+	/* parses paths into seperate tokens */
+	paths[0] = strtok(path, ":");
+	while (paths[i] != NULL)
+	{
 		i++;
+		paths[i] = strtok(NULL, ":");
+	}
 
-	// sees if input is in one of the PATH directories
+	/* sees if input is in one of the PATH directories */
 	while (paths[i])
 	{
 		d = opendir(paths[i]);
@@ -93,11 +97,12 @@ char *find_cmd(char *tcmd)
 			if (strcmp(dir->d_name, tcmd))
 			{
 				closedir(d);
-				return (path[i]);
+				return (&path[i]);
 			}
 		closedir(d);
 		i++;
 	}
+	return (NULL);
 }
 
 /**
@@ -107,9 +112,8 @@ char *find_cmd(char *tcmd)
  */
 int main(void)
 {
-	int i = 0;
 	pid_t hmm;
-	char cmd[100], tcmd[100], *param[100];
+	char cmd[100], tcmd[100], *param[100], *path;
 /*	char *envp[] = {
 		"PATH=/bin:usr/bin",
 	};
@@ -130,21 +134,22 @@ int main(void)
 		{     /* CHANGE ME TO _STRCPY etc. */
 			if (tcmd[0] != '/')
 			{
-				if (find_cmd(tcmd))
-					strcpy(cmd, paths[i]); //***EDIT HERE***
+				path = find_cmd(tcmd);
+				if (path)
+					strcpy(cmd, path);
 				else
 				{
 					printf("Command not found\n");
-					return;
+					return (-1);
 				}
 			}
 			strcat(cmd, tcmd);
-			execve(cmd, param);     //  , *envp);
+			execve(cmd, param, NULL);
 /*			if (cmd != *envp)
-			{
-				printf("Command not found\n");
-			}
-*/
+ *			{
+ *				printf("Command not found\n");
+ *			}
+ */
 		}
 	}
 }
