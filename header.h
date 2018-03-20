@@ -15,8 +15,12 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
+extern char **environ;
+
 void type_prompt(void);
 
 void read_cmd(char *cmd, char **param);
+
+char *find_cmd(char *tcmd);
 
 #endif /* __HEADER__ */
