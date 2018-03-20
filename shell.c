@@ -53,6 +53,7 @@ void read_cmd(char *cmd, char **param)
 		i++;
 		token = strtok(NULL, " \n");
 	}
+	/* THE MAGIC IS HERE: */
 	strcpy(cmd, tok[0]); /* set command and parameters from input tokens */
 	for (j = 0; j < i; j++)
 		param[j] = tok[j];
@@ -78,8 +79,14 @@ char *find_cmd(char *tcmd)
 
 	/* finds environment variable PATHs in system */
 	while (environ[i])
+	{
 		if (strncmp(environ[i], "PATH=", 5) == 0)
+		{
 			path = (environ[i] + 5);
+			break;
+		}
+		i++;
+	}
 	i = 0;
 	/* parses paths into seperate tokens */
 	paths[0] = strtok(path, ":");
