@@ -67,9 +67,9 @@ void read_cmd(char *cmd, char **param)
  * find_cmd - searches the systems PATHs for a command
  * @tcmd: a command as typed into the shell
  *
- * Return: 1 on success, 0 if not found.
+ * Return: a string on success, the directory the command is in; 0 if not found.
  */
-int find_cmd(char *tcmd)
+char *find_cmd(char *tcmd)
 {
 	DIR *d;
 	struct dirent *dir;
@@ -85,28 +85,19 @@ int find_cmd(char *tcmd)
 	while ((paths[i] = strtok(path, ":")))
 		i++;
 
-	// to be fixed, was from MAIN
+	// sees if input is in one of the PATH directories
 	while (paths[i])
 	{
-
-//>>>>>>>	if (find_cmd(tcmd, paths[i]))
+		d = opendir(paths[i]);
+		while ((dir = readdir(d)))
+			if (strcmp(dir->d_name, tcmd))
+			{
+				closedir(d);
+				return (path[i]);
+			}
+		closedir(d);
 		i++;
 	}
-	if (paths[i] == NULL)
-	{
-		printf("Command not found\n");
-		return;
-	}
-
-	// sees if input is in one of the PATH directories
-	d = opendir(paths);
-	while ((dir = readdir(d)))
-		if (strcmp(dir->d_name, tcmd))
-		{
-			strcpy(tcmd, paths[i]);
-			closedir(d);
-		}
-	closedir(d);
 }
 
 /**
@@ -138,8 +129,15 @@ int main(void)
 		else
 		{     /* CHANGE ME TO _STRCPY etc. */
 			if (tcmd[0] != '/')
+			{
 				if (find_cmd(tcmd))
 					strcpy(cmd, paths[i]); //***EDIT HERE***
+				else
+				{
+					printf("Command not found\n");
+					return;
+				}
+			}
 			strcat(cmd, tcmd);
 			execve(cmd, param);     //  , *envp);
 /*			if (cmd != *envp)
