@@ -103,7 +103,8 @@ char *find_cmd(char *tcmd)
 	printf("all paths printed.\n");
 
 	/* sees if input is in one of the PATH directories */
-	while (i >= 0)
+	i = 0; //reset i to zero
+	while (path[i]) //Adriel - change this condition
 	{
 		printf("while loop entered, opening a directory...\n");
 		printf("value of d before opendir: %p", d);
@@ -113,7 +114,7 @@ char *find_cmd(char *tcmd)
 		while ((dir = readdir(d)))
 		{
 			printf("readdir loop entered.\n");
-			if (strcmp(dir->d_name, tcmd))
+			if (strcmp(dir->d_name, tcmd) == 0) //Adriel - strcmp return value has to == 0.
 			{
 				printf("command match found in this directory\n");
 				printf("closedir(d) = %d (0 is success)\n", closedir(d));
@@ -122,7 +123,7 @@ char *find_cmd(char *tcmd)
 			printf("no match found in this directory\n");
 		}
 		printf("closedir(d) = %d (0 is success)\n", closedir(d));
-		i--;
+		i++; //Adriel - Incremented
 	}
 	printf("all paths checked, returning to main.\n");
 	return (NULL);
@@ -137,9 +138,9 @@ int main(void)
 {
 	pid_t hmm;
 	char cmd[100], tcmd[100], *param[100], *path;
-/*	char *envp[] = {
-		"PATH=/bin:usr/bin",
-	};
+/*char *envp[] = {
+  "PATH=/bin:usr/bin",
+  };
 */
 
 	while (1)
@@ -176,10 +177,10 @@ int main(void)
 			else
 				strcpy(cmd, tcmd);
 			execve(cmd, param, NULL);
-/*			if (cmd != *envp)
- *			{
- *				printf("Command not found\n");
- *			}
+/*if (cmd != *envp)
+ *{
+ *printf("Command not found\n");
+ *}
  */
 		}
 	}
