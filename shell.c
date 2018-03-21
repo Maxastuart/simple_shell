@@ -95,13 +95,12 @@ char *find_cmd(char *tcmd)
 		i++;
 		paths[i] = strtok(NULL, ":");
 	}
-/*
- *	for (i = 0; paths[i]; i++)
- *		printf("Path[%d]: %s\n", i, paths[i]);
- */
+
+	for (i = 0; paths[i]; i++)
+		printf("Path[%d]: %s\n", i, paths[i]);
+
 	/* sees if input is in one of the PATH directories */
-	i = 0;
-	while (paths[i])
+	while (i >= 0)
 	{
 		d = opendir(paths[i]);
 		while ((dir = readdir(d)))
@@ -111,7 +110,7 @@ char *find_cmd(char *tcmd)
 				return (paths[i]);
 			}
 		closedir(d);
-		i++;
+		i--;
 	}
 	return (NULL);
 }
