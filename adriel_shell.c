@@ -98,21 +98,20 @@ char *find_cmd(char *tcmd)
 		i++;
 		paths[i] = strtok(NULL, ":");
 	}
-	printf("Find_cmd is working\n");
 
 	i = 0;
 	while(paths[i])
 	{
 		printf("Entering loop\n");
-		strcpy(location, paths[i]);
+		strcpy(location, paths[i]); /* Copying Path[i] to *location */
 		printf("I'm location %s\n", location);
-		strcat(location, "/");
+		strcat(location, "/");      /* add "/" at the end of *location */
 		printf("Location Cat '/': %s\n", location);
-		strcat(location, tcmd);
+		strcat(location, tcmd);    /* add tcmd at the end of *location giving me the absolute path*/
 		printf("Location cat with cmd: %s\n", location);
-		if(stat(location, &st) == 0)
+		if(stat(location, &st) == 0) /* Condition to check if file is found */
 		{
-			printf("found the location: %s\n", location);
+			printf("found the location of: %s\n", location);
 			return (location);
 		}
 		i++;
