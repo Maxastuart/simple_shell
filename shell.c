@@ -15,13 +15,14 @@ void type_prompt(void)
  * @cmd: text string of command name
  * @param: array of text strings of parameters
  */
-void read_cmd(char *cmd, char **param)
+void read_cmd(char **param)
 {
 	char *lineptr, **tok, *tmp, *token;
 	ssize_t gline;
 	size_t n = 0;
 	int i = 0, j = 0;
 
+	printf("Entered read_cmd\n");
 	tok = malloc(128 * sizeof(char *));
 	if (tok == NULL)
 	{
@@ -33,6 +34,7 @@ void read_cmd(char *cmd, char **param)
 		free(tok);
 		exit(EXIT_FAILURE);
 	}
+	printf("passed mallocs. now getlining...\n");
 	gline = getline(&lineptr, &n, stdin);
 	if (gline == -1)
 	{
@@ -40,24 +42,33 @@ void read_cmd(char *cmd, char **param)
 		free(lineptr);
 		exit(EXIT_FAILURE);
 	}
+	printf("gline = %li\n", gline);
 	while (lineptr[j] != '\n')
 	{
 		tmp[j] = lineptr[j];
 		j++;
 	}
+	printf("setting null term at end of cut line\n");
 	tmp[j] = '\0';
 
+	printf("tokenizing...\n");
 	token = strtok(tmp, " \n");
+	printf("first token is: %s\n", token);
 	while (token != NULL)
 	{
 		tok[i] = token;
 		i++;
 		token = strtok(NULL, " \n");
 	}
+	printf("tokenizing complete. now MAGIC\n");
 	/* THE MAGIC IS HERE: */
-	strcpy(cmd, tok[0]); /* set command and parameters from input tokens */
+//	printf("pre-cpy [cmd = %s] and [tok[0] = %s]\n", cmd, tok[0]);
+//	strcpy(cmd, tok[0]); /* set command and parameters from input tokens */
+//	printf("post-cpy [cmd = %s] and [tok[0] = %s]\n", cmd, tok[0]);
+	printf("assigning params...\n");
 	for (j = 0; j < i; j++)
 		param[j] = tok[j];
+	printf("params assigned.\n");
 	param[j] = NULL;
 
 	free(tok);
@@ -142,41 +153,48 @@ int main(void)
 	while (1)
 	{
 		type_prompt();
-		read_cmd(tcmd, param);
-		if (strcmp (tcmd, "exit") == 0)
-			return (0);
-		if (fork() != 0)
+		read_cmd(param);
+		if (strcmp(param[0], "\n") != 0)
 		{
-			hmm = wait(NULL);
-			if (hmm == -1)
-				return (-1);
-		}
-		else
-		{
-			/* CHANGE ME TO _STRCPY etc. */
-			if (param[0][0] == '\0')
-				break;
-			else if(tcmd[0] == '.' && tcmd[1] == '/')
-				if (location_check(tcmd) == 0)
-					strcpy(cmd, tcmd);
-				else
-				{
-					printf("%s", not_found);
-					return(-1);
-				}
-			else if (tcmd[0] != '/')
-				strcpy(cmd, find_cmd(tcmd));
+			//	printf("read successful!\n");
+			if (strcmp (param[0], "exit") == 0)
+				return (0);
+
+			printf("Forking\n");
+			if (fork() != 0)
+			{
+				hmm = wait(NULL);
+				if (hmm == -1)
+					return (-1);
+			}
 			else
 			{
-				if (location_check(tcmd) == 0)
-					strcpy(cmd, tcmd);
+				/* CHANGE ME TO _STRCPY etc. */
+				if (param[0][0] == '\0')
+					break;
+				else if(param[0][0] == '.' && param[0][1] == '/')
+					if (location_check(param[0]) == 0)
+						strcpy(cmd, param[0]);
+					else
+					{
+						printf("%s", not_found);
+						return(-1);
+					}
+				else if (param[0][0] != '/')
+					strcpy(cmd, find_cmd(param[0]));
 				else
 				{
-					printf("%s", not_found);
-					return(-1);
+					if (location_check(param[0]) == 0)
+						strcpy(cmd, param[0]);
+					else
+					{
+						printf("%s", not_found);
+						return(-1);
+					}
 				}
+				execve(cmd, param, NULL);
 			}
-			execve(cmd, param, NULL);
 		}
 	}
+	return (0);
 }
