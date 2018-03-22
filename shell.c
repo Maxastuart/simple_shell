@@ -22,12 +22,12 @@ void read_cmd(char *cmd, char **param)
 	size_t n = 0;
 	int i = 0, j = 0;
 
-	tok = malloc(64 * sizeof(char *));
+	tok = malloc(128 * sizeof(char *));
 	if (tok == NULL)
 	{
 		exit(EXIT_FAILURE);
 	}
-	tmp = malloc(64 * sizeof(char *));
+	tmp = malloc(128 * sizeof(char *));
 	if (tmp == NULL)
 	{
 		free(tok);
@@ -36,6 +36,7 @@ void read_cmd(char *cmd, char **param)
 	gline = getline(&lineptr, &n, stdin);
 	if (gline == -1)
 	{
+		free(tok);
 		free(lineptr);
 		exit(EXIT_FAILURE);
 	}
@@ -102,8 +103,8 @@ char *find_cmd(char *tcmd)
 	while(paths[i])
 	{
 		strcpy(location, paths[i]); /* Copying Path[i] to *location */
-		strcat(location, "/");      /* add "/" at the end of *location */
-		strcat(location, tcmd);    /* add tcmd at the end of *location giving me the absolute path*/
+		strcat(location, "/");      /* add "/" at the end */
+		strcat(location, tcmd);    /* add tcmd to make full path */
 		if (location_check(location) == 0)
 			return (location);
 		i++;
@@ -124,9 +125,7 @@ int location_check(char *cmd)
 {
 	struct stat st;
 
-
 	return(stat(cmd, &st));
-
 }
 
 /**
@@ -137,18 +136,15 @@ int location_check(char *cmd)
 int main(void)
 {
 	pid_t hmm;
-	char cmd[100], tcmd[100], *param[100], *path, *not_found;
-/*char *envp[] = {
-  "PATH=/bin:usr/bin",
-  };
-*/
-	not_found = "command or directory not found\n";
+	char cmd[100], tcmd[100], *param[100], *not_found;
 
+	not_found = "command or directory not found\n";
 	while (1)
 	{
 		type_prompt();
 		read_cmd(tcmd, param);
-
+		if (strcmp (tcmd, "exit") == 0)
+			return (0);
 		if (fork() != 0)
 		{
 			hmm = wait(NULL);
@@ -158,7 +154,9 @@ int main(void)
 		else
 		{
 			/* CHANGE ME TO _STRCPY etc. */
-			if(tcmd[0] == '.' && tcmd[1] == '/')
+			if (param[0][0] == '\0')
+				break;
+			else if(tcmd[0] == '.' && tcmd[1] == '/')
 				if (location_check(tcmd) == 0)
 					strcpy(cmd, tcmd);
 				else
@@ -167,9 +165,7 @@ int main(void)
 					return(-1);
 				}
 			else if (tcmd[0] != '/')
-			{
 				strcpy(cmd, find_cmd(tcmd));
-			}
 			else
 			{
 				if (location_check(tcmd) == 0)
@@ -181,11 +177,6 @@ int main(void)
 				}
 			}
 			execve(cmd, param, NULL);
-/*if (cmd != *envp)
- *{
- *printf("Command not found\n");
- *}
- */
 		}
 	}
 }
