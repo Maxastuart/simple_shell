@@ -74,7 +74,6 @@ char *find_cmd(char *tcmd)
 {
 	int i = 0;
 	char *path, *paths[256], *location;
-	struct stat st;
 
 	location = malloc(200 * sizeof(char));
 	if (location == NULL)
@@ -102,21 +101,32 @@ char *find_cmd(char *tcmd)
 	i = 0;
 	while(paths[i])
 	{
-		printf("Entering loop\n");
 		strcpy(location, paths[i]); /* Copying Path[i] to *location */
-		printf("I'm location %s\n", location);
 		strcat(location, "/");      /* add "/" at the end of *location */
-		printf("Location Cat '/': %s\n", location);
 		strcat(location, tcmd);    /* add tcmd at the end of *location giving me the absolute path*/
-		printf("Location cat with cmd: %s\n", location);
-		if(stat(location, &st) == 0) /* Condition to check if file is found */
-		{
-			printf("found the location of: %s\n", location);
+		if (location_check(location) == 0)
 			return (location);
-		}
 		i++;
 	}
+	printf("command or directory not found\n");
+
+	free(location);
 	return (NULL);
+}
+
+/**
+ * location_check - looks if cmd exists in current directory
+ * @cmd: takes command
+ *
+ * Return: 0 if found, otherwise 1
+ */
+int location_check(char *cmd)
+{
+	struct stat st;
+
+
+	return(stat(cmd, &st));
+
 }
 
 /**
@@ -145,19 +155,25 @@ int main(void)
 				return (-1);
 		}
 		else
-		{     /* CHANGE ME TO _STRCPY etc. */
-			if (tcmd[0] != '/')
+		{
+			/* CHANGE ME TO _STRCPY etc. */
+			if(tcmd[0] == '.' && tcmd[1] == '/')
+				strcpy(cmd, tcmd);
+
+			else if (tcmd[0] != '/')
 			{
 				strcpy(cmd, find_cmd(tcmd));
-				execve(cmd, param, NULL);
-				/*	else
-				{
-					printf("Command not found\n");
-					return (-1);
-					}*/
 			}
 			else
-				strcpy(cmd, tcmd);
+			{
+				if (location_check(tcmd) == 0)
+					strcpy(cmd, tcmd);
+				else
+				{
+					printf("command or directory not found\n");
+					return(-1);
+				}
+			}
 			execve(cmd, param, NULL);
 /*if (cmd != *envp)
  *{

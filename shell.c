@@ -72,10 +72,12 @@ void read_cmd(char *cmd, char **param)
  */
 char *find_cmd(char *tcmd)
 {
-	DIR *d;
-	struct dirent *dir;
 	int i = 0;
-	char *path, *paths[256];
+	char *path, *paths[256], *location;
+
+	location = malloc(200 * sizeof(char));
+	if (location == NULL)
+		return (NULL);
 
 	/* finds environment variable PATHs in system */
 	while (environ[i])
@@ -96,23 +98,35 @@ char *find_cmd(char *tcmd)
 		paths[i] = strtok(NULL, ":");
 	}
 
-	for (i = 0; paths[i]; i++)
-		printf("Path[%d]: %s\n", i, paths[i]);
-
-	/* sees if input is in one of the PATH directories */
-	while (i >= 0)
+	i = 0;
+	while(paths[i])
 	{
-		d = opendir(paths[i]);
-		while ((dir = readdir(d)))
-			if (strcmp(dir->d_name, tcmd))
-			{
-				closedir(d);
-				return (paths[i]);
-			}
-		closedir(d);
-		i--;
+		strcpy(location, paths[i]); /* Copying Path[i] to *location */
+		strcat(location, "/");      /* add "/" at the end of *location */
+		strcat(location, tcmd);    /* add tcmd at the end of *location giving me the absolute path*/
+		if (location_check(location) == 0)
+			return (location);
+		i++;
 	}
+	printf("command or directory not found\n");
+
+	free(location);
 	return (NULL);
+}
+
+/**
+ * location_check - looks if cmd exists in current directory
+ * @cmd: takes command
+ *
+ * Return: 0 if found, otherwise 1
+ */
+int location_check(char *cmd)
+{
+	struct stat st;
+
+
+	return(stat(cmd, &st));
+
 }
 
 /**
@@ -124,9 +138,9 @@ int main(void)
 {
 	pid_t hmm;
 	char cmd[100], tcmd[100], *param[100], *path;
-/*	char *envp[] = {
-		"PATH=/bin:usr/bin",
-	};
+/*char *envp[] = {
+  "PATH=/bin:usr/bin",
+  };
 */
 
 	while (1)
@@ -141,27 +155,30 @@ int main(void)
 				return (-1);
 		}
 		else
-		{     /* CHANGE ME TO _STRCPY etc. */
-			if (tcmd[0] != '/')
+		{
+			/* CHANGE ME TO _STRCPY etc. */
+			if(tcmd[0] == '.' && tcmd[1] == '/')
+				strcpy(cmd, tcmd);
+
+			else if (tcmd[0] != '/')
 			{
-				path = find_cmd(tcmd);
-				if (path)
-				{
-					strcpy(cmd, path);
-					strcat(cmd, "/");
-				}
+				strcpy(cmd, find_cmd(tcmd));
+			}
+			else
+			{
+				if (location_check(tcmd) == 0)
+					strcpy(cmd, tcmd);
 				else
 				{
-					printf("Command not found\n");
-					return (-1);
+					printf("command or directory not found\n");
+					return(-1);
 				}
 			}
-			strcat(cmd, tcmd);
 			execve(cmd, param, NULL);
-/*			if (cmd != *envp)
- *			{
- *				printf("Command not found\n");
- *			}
+/*if (cmd != *envp)
+ *{
+ *printf("Command not found\n");
+ *}
  */
 		}
 	}
