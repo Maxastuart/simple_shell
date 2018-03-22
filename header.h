@@ -21,6 +21,8 @@ void type_prompt(void);
 
 void read_cmd(char *cmd, char **param);
 
+int location_check(char *cmd);
+
 char *find_cmd(char *tcmd);
 
 #endif /* __HEADER__ */
