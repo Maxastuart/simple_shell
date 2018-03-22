@@ -137,11 +137,12 @@ int location_check(char *cmd)
 int main(void)
 {
 	pid_t hmm;
-	char cmd[100], tcmd[100], *param[100], *path;
+	char cmd[100], tcmd[100], *param[100], *path, *not_found;
 /*char *envp[] = {
   "PATH=/bin:usr/bin",
   };
 */
+	not_found = "command or directory not found\n";
 
 	while (1)
 	{
@@ -158,8 +159,13 @@ int main(void)
 		{
 			/* CHANGE ME TO _STRCPY etc. */
 			if(tcmd[0] == '.' && tcmd[1] == '/')
-				strcpy(cmd, tcmd);
-
+				if (location_check(tcmd) == 0)
+					strcpy(cmd, tcmd);
+				else
+				{
+					printf("%s", not_found);
+					return(-1);
+				}
 			else if (tcmd[0] != '/')
 			{
 				strcpy(cmd, find_cmd(tcmd));
@@ -170,7 +176,7 @@ int main(void)
 					strcpy(cmd, tcmd);
 				else
 				{
-					printf("command or directory not found\n");
+					printf("%s", not_found);
 					return(-1);
 				}
 			}
