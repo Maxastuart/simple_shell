@@ -140,6 +140,8 @@ int main(void)
 	{
 		type_prompt();
 		read_cmd(param);
+		if (strncmp(param[0], "exit", 4) == 0)
+			break;
 		if (fork() != 0)
 		{
 			hmm = wait(NULL);
