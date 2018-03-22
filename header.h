@@ -19,7 +19,7 @@ extern char **environ;
 
 void type_prompt(void);
 
-void read_cmd(char *cmd, char **param);
+void read_cmd(char **param);
 
 int location_check(char *cmd);
 
