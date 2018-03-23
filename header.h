@@ -25,4 +25,6 @@ int location_check(char *cmd);
 
 char *find_cmd(char *tcmd);
 
+void _kill(void);
+
 #endif /* __HEADER__ */
