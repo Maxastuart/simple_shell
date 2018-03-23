@@ -27,4 +27,6 @@ char *find_cmd(char *tcmd);
 
 void _kill(void);
 
+void env(void);
+
 #endif /* __HEADER__ */
