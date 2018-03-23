@@ -23,6 +23,8 @@ int main(void)
 		{
 			if (strncmp(param[0], "exit", 4) == 0)
 				_kill();
+			else if (strncmp(param[0], "env", 3) == 0)
+				env();
 			/* CHANGE ME TO _STRCPY etc. */
 			else if (param[0][0] == '\0')
 				exit(1);
