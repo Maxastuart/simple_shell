@@ -13,8 +13,6 @@ int main(void)
 	{
 		type_prompt();
 		read_cmd(param);
-		if (strncmp(param[0], "exit", 4) == 0)
-			break;
 		if (fork() != 0)
 		{
 			hmm = wait(NULL);
@@ -23,9 +21,11 @@ int main(void)
 		}
 		else
 		{
+			if (strncmp(param[0], "exit", 4) == 0)
+				_kill();
 			/* CHANGE ME TO _STRCPY etc. */
-			if (param[0][0] == '\0')
-				break;
+			else if (param[0][0] == '\0')
+				exit(1);
 			else if(param[0][0] == '.' && param[0][1] == '/')
 				if (location_check(param[0]) == 0)
 					strcpy(cmd, param[0]);
