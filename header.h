@@ -29,4 +29,9 @@ void _kill(void);
 
 void env(void);
 
+
+int _strcmp(char *s1, char *s2);
+
+int _strncmp(char *s1, char *s2, int n);
+
 #endif /* __HEADER__ */
