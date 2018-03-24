@@ -5,7 +5,7 @@
  */
 void type_prompt(void)
 {
-        char *s = "$ ";
+	char *s = "$ ";
 
-        write(STDOUT_FILENO, s, 2);
+	write(STDOUT_FILENO, s, 2);
 }

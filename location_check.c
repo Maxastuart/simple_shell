@@ -8,7 +8,7 @@
  */
 int location_check(char *cmd)
 {
-        struct stat st;
+	struct stat st;
 
-        return(stat(cmd, &st));
+	return (stat(cmd, &st));
 }

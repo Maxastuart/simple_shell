@@ -6,11 +6,11 @@
 
 void env(void)
 {
-	char **paths, *path;
+	char *path;
 	int i = 0, j = 0;
 
 
-	while(environ[i])
+	while (environ[i])
 	{
 		path = environ[i];
 		while (path[j])

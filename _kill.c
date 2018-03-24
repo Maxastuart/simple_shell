@@ -6,6 +6,6 @@
 
 void _kill(void)
 {
-	kill (getppid(), 2);
+	kill(getppid(), 2);
 	_exit(1);
 }
