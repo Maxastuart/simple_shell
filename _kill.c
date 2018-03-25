@@ -4,8 +4,8 @@
  * _kill - kills process
  */
 
-void _kill(void)
+void _kill(char *lineptr)
 {
-	kill(getppid(), 2);
+	free(lineptr);
 	_exit(1);
 }
