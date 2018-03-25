@@ -23,13 +23,9 @@ int main(void)
 		}
 		else
 		{
-			if (strncmp(param[0], "exit", 4) == 0)
-				_kill();
-			else if (strncmp(param[0], "env", 3) == 0)
+			if (strncmp(param[0], "env", 3) == 0)
 				env();
 			/* CHANGE ME TO _STRCPY etc. */
-			else if (param[0][0] == '\0')
-				exit(1);
 			else if (param[0][0] == '.' && param[0][1] == '/')
 				if (location_check(param[0]) == 0)
 					strcpy(cmd, param[0]);
