@@ -2,7 +2,6 @@
 
 /**
  * read_cmd - reads user input for command to execute, along with parameters
- * @cmd: text string of command name
  * @param: array of text strings of parameters
  */
 void read_cmd(char **param)
@@ -28,7 +27,7 @@ void read_cmd(char **param)
 		free(tmp);
 		exit(EXIT_FAILURE);
 	}
-	if (strncmp(lineptr, "exit", 4) == 0)
+	if (_strncmp(lineptr, "exit", 4) == 0)
 		_kill(lineptr);
 	while (lineptr[j] != '\n')
 	{
@@ -46,7 +45,5 @@ void read_cmd(char **param)
 	for (j = 0; j < i; j++) /* THE MAGIC IS HERE: */
 		param[j] = tok[j];
 	param[j] = NULL;
-	free(tok);
-	free(tmp);
-	free(lineptr);
+	free(tok); free(tmp); free(lineptr);
 }

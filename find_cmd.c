@@ -18,7 +18,7 @@ char *find_cmd(char *tcmd)
 /* finds environment variable PATHs in system */
 	while (environ[i])
 	{
-		if (strncmp(environ[i], "PATH=", 5) == 0)
+		if (_strncmp(environ[i], "PATH=", 5) == 0)
 		{
 			path = (environ[i] + 5);
 			break;
@@ -37,14 +37,14 @@ char *find_cmd(char *tcmd)
 	i = 0;
 	while (paths[i])
 	{
-		strcpy(location, paths[i]); /* Copying Path[i] to *location */
-		strcat(location, "/");      /* add "/" at the end */
-		strcat(location, tcmd);    /* add tcmd to make full path */
+		_strcpy(location, paths[i]); /* Copying Path[i] to *location */
+		_strcat(location, "/");      /* add "/" at the end */
+		_strcat(location, tcmd);    /* add tcmd to make full path */
 		if (location_check(location) == 0)
 			return (location);
 		i++;
 	}
-	printf("command or directory not found\n");
+	write_nope();
 
 	free(location);
 	return (NULL);

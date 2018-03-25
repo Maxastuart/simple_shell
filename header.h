@@ -30,6 +30,8 @@ void _kill(char *lineptr);
 
 void env(void);
 
+int write_nope(void);
+
 
 int _strcmp(char *s1, char *s2);
 
@@ -38,5 +40,6 @@ int _strncmp(char *s1, char *s2, int n);
 char *_strcat(char *dest, char *src);
 
 char *_strcpy(char *dest, char *src);
+
 
 #endif /* __HEADER__ */

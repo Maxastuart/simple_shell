@@ -23,29 +23,21 @@ int main(void)
 		}
 		else
 		{
-			if (strncmp(param[0], "env", 3) == 0)
+			if (_strncmp(param[0], "env", 3) == 0)
 				env();
-			/* CHANGE ME TO _STRCPY etc. */
 			else if (param[0][0] == '.' && param[0][1] == '/')
 				if (location_check(param[0]) == 0)
-					strcpy(cmd, param[0]);
+					_strcpy(cmd, param[0]);
 				else
-				{
-					printf("%s", nope);
-					return (-1);
-				}
+					return (write_nope());
 			else if (param[0][0] != '/')
-				strcpy(cmd, find_cmd(param[0]));
+				_strcpy(cmd, find_cmd(param[0]));
 			else
 			{
 				if (location_check(param[0]) == 0)
-					strcpy(cmd, param[0]);
+					_strcpy(cmd, param[0]);
 				else
-				{
-					if (write(1, nope, 32) != 32)
-						write(2, error, 44);
-					return (-1);
-				}
+					return (write_nope());
 			}
 			execve(cmd, param, NULL);
 		}
