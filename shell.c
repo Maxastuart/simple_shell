@@ -8,8 +8,7 @@
 int main(void)
 {
 	pid_t hmm;
-	char cmd[100], *param[100], *nope = "command or directory not found\n",
-		*error = "There was an error writing to standard out\n";
+	char cmd[100], *param[100];
 
 	while (1)
 	{
