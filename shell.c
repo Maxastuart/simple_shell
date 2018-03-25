@@ -38,7 +38,7 @@ int main(void)
 				else
 					return (write_nope());
 			}
-			execve(cmd, param, NULL);
+			return (execve(cmd, param, NULL));
 		}
 	}
 	return (0);
