@@ -6,7 +6,7 @@
  *
  * Return: a string on success, the directory the command is in; 0 if not found
  */
-char *find_cmd(char *tcmd)
+char *find_cmd(char *av, int count, char *param)
 {
 	int i = 0;
 	char *path, *paths[256], *location;
@@ -44,7 +44,7 @@ char *find_cmd(char *tcmd)
 			return (location);
 		i++;
 	}
-	write_nope();
+	write_nope(av, count, param);
 
 	free(location);
 	return (NULL);
