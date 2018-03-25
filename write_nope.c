@@ -1,16 +1,29 @@
 #include "header.h"
 
 /**
- * write_nope - writes commmand or director not found to stdout, or error
- *
- * Return: Always -1.
+ * write_not_found - error message if command does not exist
+ * @input: string location of the shell as typed in
+ * @count: number of how many child has been processed
+ * @param: string of command to look for
+ * Return: -1 error, 0 - malloc failed
  */
-int write_nope(void)
+int write_nope(char *av, int count, char *param)
 {
-	char *nope = "command or directory not found\n",
-		*error = "There was an error writing to standard out\n";
+	char *str, *colon_space = ": ", *notfound = ": not found\n";
+	int i;
 
-	if (write(STDOUT_FILENO, nope, 32) != 32)
-		write(STDERR_FILENO, error, 44);
+	str = malloc(sizeof(char) * 256);
+	if (str == NULL)
+		return (0);
+	_strcpy(str, input);
+	_strcat(str, colon_space);
+	_strcat(str, count);
+	_strcat(str, colon_space);
+	_strcat(str, param);
+	_strcat(str, notfound);
+	i = _strlen(str);
+
+	write(STDOUT_FILENO, str, i);
+	free(str);
 	return (-1);
 }
