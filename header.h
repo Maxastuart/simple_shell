@@ -14,7 +14,7 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <sys/resource.h>
-#define delim " \n"
+#define delim "\n "
 
 extern char **environ;
 
@@ -30,8 +30,10 @@ void _kill(char *lineptr);
 
 void env(void);
 
-int write_nope(void);
+int write_not_found(char *av, int count, char *param);
 
+
+int _strlen(char *s);
 
 int _strcmp(char *s1, char *s2);
 
