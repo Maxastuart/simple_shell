@@ -28,18 +28,20 @@ void read_cmd(char **param)
 		free(tmp);
 		exit(EXIT_FAILURE);
 	}
+	if (strncmp(lineptr, "exit", 4) == 0)
+		_kill(lineptr);
 	while (lineptr[j] != '\n')
 	{
 		tmp[j] = lineptr[j];
 		j++;
 	}
 	tmp[j] = '\0';
-	token = strtok(tmp, " \n");
+	token = strtok(tmp, delim);
 	while (token != NULL)
 	{
 		tok[i] = token;
 		i++;
-		token = strtok(NULL, " \n");
+		token = strtok(NULL, delim);
 	}
 	for (j = 0; j < i; j++) /* THE MAGIC IS HERE: */
 		param[j] = tok[j];
