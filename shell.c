@@ -2,17 +2,21 @@
 
 /**
  * main - looping shell function, executing command if correctly entered
+ * @ac: argument count
+ * @av: arguments in an array of strings
  *
  * Return: -1 on error, otherwise nothing (gives control to executed command)
  */
-int main(void)
+int main(int ac, char **av)
 {
 	pid_t hmm;
 	char cmd[100], *param[100];
+	int i = 1;
 
 	while (1)
 	{
-		type_prompt();
+		if (isatty(STDIN_FILENO))
+			type_prompt();
 		read_cmd(param);
 		if (fork() != 0)
 		{
@@ -28,18 +32,19 @@ int main(void)
 				if (location_check(param[0]) == 0)
 					_strcpy(cmd, param[0]);
 				else
-					return (write_nope());
+					return (write_nope(av[0], i, param[0]));
 			else if (param[0][0] != '/')
-				_strcpy(cmd, find_cmd(param[0]));
+				_strcpy(cmd, find_cmd(av[0], i, param[0]));
 			else
 			{
 				if (location_check(param[0]) == 0)
 					_strcpy(cmd, param[0]);
 				else
-					return (write_nope());
+					return (write_nope(av[0], i, param[0]));
 			}
 			return (execve(cmd, param, NULL));
 		}
+		i++;
 	}
 	return (0);
 }
