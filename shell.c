@@ -8,7 +8,8 @@
 int main(void)
 {
 	pid_t hmm;
-	char cmd[100], *param[100], *nope = "command or directory not found\n";
+	char cmd[100], *param[100], *nope = "command or directory not found\n",
+		*error = "There was an error writing to standard out\n";
 
 	while (1)
 	{
@@ -45,7 +46,8 @@ int main(void)
 					strcpy(cmd, param[0]);
 				else
 				{
-					printf("%s", nope);
+					if (write(1, nope, 32) != 32)
+						write(2, error, 44);
 					return (-1);
 				}
 			}
