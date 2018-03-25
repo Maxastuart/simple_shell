@@ -14,6 +14,7 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#define delim " \n"
 
 extern char **environ;
 
@@ -25,7 +26,7 @@ int location_check(char *cmd);
 
 char *find_cmd(char *tcmd);
 
-void _kill(void);
+void _kill(char *lineptr);
 
 void env(void);
 
