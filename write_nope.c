@@ -5,12 +5,13 @@
  * @input: string location of the shell as typed in
  * @count: number of how many child has been processed
  * @param: string of command to look for
+ *
  * Return: -1 error, 0 - malloc failed
  */
 int write_nope(char *av, int count, char *param)
 {
 	char *str, *colon_space = ": ", *notfound = ": not found\n";
-
+	
 	str = malloc(sizeof(char) * 256);
 	if (str == NULL)
 		return (0);
@@ -23,5 +24,6 @@ int write_nope(char *av, int count, char *param)
 
 	write(STDOUT_FILENO, str, _strlen(str));
 	free(str);
+
 	return (-1);
 }
