@@ -1,10 +1,11 @@
 #include "header.h"
 
 /**
- * child_exec - executes command
+ * child - executes command
  * @av: string location of shell
  * @param: string of command to exec
  * @i: number of how many child has been processed
+ * @cmd: command string from main
  *
  * Return: string cmd if successful, else NULL
  */
