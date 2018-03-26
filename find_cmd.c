@@ -2,7 +2,9 @@
 
 /**
  * find_cmd - searches the systems PATHs for a command
- * @tcmd: a command as typed into the shell
+ * @av: string of first argument variable passed
+ * @count: integer count of the number of times the shell has looped
+ * @param: a command as typed into the shell
  *
  * Return: a string on success, the directory the command is in; 0 if not found
  */
