@@ -10,20 +10,18 @@
 int write_nope(char *av, int count, char *param)
 {
 	char *str, *colon_space = ": ", *notfound = ": not found\n";
-	int i;
 
 	str = malloc(sizeof(char) * 256);
 	if (str == NULL)
 		return (0);
-	_strcpy(str, input);
+	_strcpy(str, av);
 	_strcat(str, colon_space);
 	_strcat(str, count);
 	_strcat(str, colon_space);
 	_strcat(str, param);
 	_strcat(str, notfound);
-	i = _strlen(str);
 
-	write(STDOUT_FILENO, str, i);
+	write(STDOUT_FILENO, str, _strlen(str));
 	free(str);
 	return (-1);
 }
