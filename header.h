@@ -26,6 +26,8 @@ char *find_cmd(char *av, int count, char *param);
 void _kill(char *lineptr);
 void env(void);
 int write_nope(char *av, int count, char *param);
+void fork_fail(int pid_value);
+void child(char *av, char *param, int i, char *cmd);
 
 char *_itoa(int n);
 
