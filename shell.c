@@ -7,7 +7,7 @@
  *
  * Return: -1 on error, otherwise nothing (gives control to executed command)
  */
-int main(int ac, char **av)
+int main(int ac __attribute__((unused)), char **av)
 {
 	pid_t hmm;
 	char cmd[100], *param[100];
