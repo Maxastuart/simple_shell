@@ -32,6 +32,7 @@ void env(void);
 
 int write_nope(char *av, int count, char *param);
 
+char *_itoa(int n);
 
 int _strlen(char *s);
 
