@@ -1,7 +1,10 @@
 #include "header.h"
 
 /**
+ * _itoa - converts int to string
+ * @n: interger to convert
  *
+ * Return: string of numbers
  */
 char *_itoa(int n)
 {
@@ -13,12 +16,12 @@ char *_itoa(int n)
 	while (n != 0)
 	{
 		i++;
-		n = n/10;
+		n = n / 10;
 	}
 
 	str = malloc(i * sizeof(char) + 1);
 	if (str == NULL)
-		return(NULL);
+		return (NULL);
 	str[i] = '\0';
 	i--;
 
@@ -28,5 +31,6 @@ char *_itoa(int n)
 		copy = copy / 10;
 		i--;
 	}
-	return(str);
+
+	return (str);
 }
