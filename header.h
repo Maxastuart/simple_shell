@@ -24,13 +24,13 @@ void read_cmd(char **param);
 
 int location_check(char *cmd);
 
-char *find_cmd(char *tcmd);
+char *find_cmd(char *av, int count, char *param);
 
 void _kill(char *lineptr);
 
 void env(void);
 
-int write_not_found(char *av, int count, char *param);
+int write_nope(char *av, int count, char *param);
 
 
 int _strlen(char *s);
