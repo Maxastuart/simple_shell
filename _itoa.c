@@ -8,7 +8,7 @@
  */
 char *_itoa(int n)
 {
-	int copy, j, i = 0;
+	int copy, i = 0;
 	char *str;
 
 	copy = n;
