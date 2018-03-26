@@ -6,7 +6,7 @@
  *
  * Return: a string on success, the directory the command is in; 0 if not found
  */
-char *find_cmd(char *tcmd)
+char *find_cmd(char *av, int count, char *param)
 {
 	int i = 0;
 	char *path, *paths[256], *location;
@@ -39,12 +39,12 @@ char *find_cmd(char *tcmd)
 	{
 		_strcpy(location, paths[i]); /* Copying Path[i] to *location */
 		_strcat(location, "/");      /* add "/" at the end */
-		_strcat(location, tcmd);    /* add tcmd to make full path */
+		_strcat(location, param);    /* add tcmd to make full path */
 		if (location_check(location) == 0)
 			return (location);
 		i++;
 	}
-	write_nope();
+	write_nope(av, count, param);
 
 	free(location);
 	return (NULL);
