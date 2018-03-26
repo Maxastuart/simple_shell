@@ -39,7 +39,7 @@ char *find_cmd(char *av, int count, char *param)
 	{
 		_strcpy(location, paths[i]); /* Copying Path[i] to *location */
 		_strcat(location, "/");      /* add "/" at the end */
-		_strcat(location, tcmd);    /* add tcmd to make full path */
+		_strcat(location, param);    /* add tcmd to make full path */
 		if (location_check(location) == 0)
 			return (location);
 		i++;
