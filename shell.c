@@ -9,7 +9,7 @@
  */
 int main(int ac __attribute__((unused)), char **av)
 {
-	pid_t hmm;
+	pid_t hmm, pid;
 	char cmd[100], *param[100];
 	int i = 1;
 
@@ -18,7 +18,10 @@ int main(int ac __attribute__((unused)), char **av)
 		if (isatty(STDIN_FILENO))
 			type_prompt();
 		read_cmd(param);
-		if (fork() != 0)
+		pid = fork();
+		if (pid < 0)
+			fork_fail(pid);
+		else if (pid > 0)
 		{
 			hmm = wait(NULL);
 			if (hmm == -1)
@@ -26,25 +29,12 @@ int main(int ac __attribute__((unused)), char **av)
 		}
 		else
 		{
-			if (_strncmp(param[0], "env", 3) == 0)
-				env();
-			else if (param[0][0] == '.' && param[0][1] == '/')
-				if (location_check(param[0]) == 0)
-					_strcpy(cmd, param[0]);
-				else
-					return (write_nope(av[0], i, param[0]));
-			else if (param[0][0] != '/')
-				_strcpy(cmd, find_cmd(av[0], i, param[0]));
-			else
-			{
-				if (location_check(param[0]) == 0)
-					_strcpy(cmd, param[0]);
-				else
-					return (write_nope(av[0], i, param[0]));
-			}
+			child(av[0], param[0], i, cmd);
+			if (cmd[0] == '\0')
+				write_nope(av[0], i, param[0]);
 			return (execve(cmd, param, NULL));
 		}
 		i++;
 	}
-	return (0);
+	return (-1);
 }
