@@ -41,6 +41,7 @@ To launch simple shell:
 Example: [command] [options]
 ```ShellSession
 $ env
+```
 ```ShellSession
 $ ls -la
 ```
