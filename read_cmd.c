@@ -14,7 +14,7 @@ void read_cmd(char **param)
 	tok = malloc(128 * sizeof(char *));
 	if (tok == NULL)
 		exit(EXIT_FAILURE);
-	tmp = malloc(128 * sizeof(char *));
+	tmp = malloc(128 * sizeof(char));
 	if (tmp == NULL)
 	{
 		free(tok);
@@ -23,12 +23,11 @@ void read_cmd(char **param)
 	gline = getline(&lineptr, &n, stdin);
 	if (gline == -1)
 	{
-		free(tok);
-		free(tmp);
+		free(tok); free(tmp);
 		exit(EXIT_FAILURE);
 	}
 	if (_strncmp(lineptr, "exit", 4) == 0)
-		_kill(lineptr);
+		_kill(lineptr, tmp, tok);
 	while (lineptr[j] != '\n')
 	{
 		tmp[j] = lineptr[j];
