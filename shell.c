@@ -15,6 +15,7 @@ int main(int ac __attribute__((unused)), char **av)
 
 	while (1)
 	{
+		signal(SIGINT, signalHandler);
 		if (isatty(STDIN_FILENO))
 			type_prompt();
 		read_cmd(param);
