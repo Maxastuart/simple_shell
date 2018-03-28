@@ -38,9 +38,10 @@ To launch simple shell:
 ./hsh
 ```
 
-Example: [command] [command options]
+Example: [command] [options]
 ```ShellSession
 $ env
+```ShellSession
 $ ls -la
 ```
 
