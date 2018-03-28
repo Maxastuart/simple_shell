@@ -2,7 +2,7 @@
 
 /**
  * fork_fail - prints fork error message if fork fails
- *@pid: value of pid
+ *@pid_value: value of pid
  */
 
 void fork_fail(int pid_value)
