@@ -8,8 +8,8 @@
  */
 int read_cmd(char **param)
 {
-	char *lineptr, **tok, *tmp, *token;
-	ssize_t gline; size_t n = 0;
+	char *lineptr = NULL, **tok, *tmp, *token;
+	ssize_t gline = 0; size_t n = 0;
 	int i = 0, j = 0;
 
 	tok = malloc(128 * sizeof(char *));
