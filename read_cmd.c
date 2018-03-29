@@ -25,8 +25,6 @@ void read_cmd(char **param)
 		free(tok); free(tmp);
 		exit(EXIT_FAILURE);
 	}
-	if (isatty(STDIN_FILENO) == 0)
-		_kill(lineptr, tmp, tok);
 	if (_strncmp(lineptr, "exit", 4) == 0)
 		_kill(lineptr, tmp, tok);
 	while (lineptr[j] != '\n')
