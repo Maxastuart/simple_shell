@@ -19,8 +19,10 @@
 
 extern char **environ;
 
+extern int status;
+
 void type_prompt(void);
-void read_cmd(char **param);
+int read_cmd(char **param);
 int location_check(char *cmd);
 char *find_cmd(char *av, int count, char *param);
 void _kill(char *lineptr, char *tmp, char **tok);

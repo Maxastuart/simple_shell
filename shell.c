@@ -1,5 +1,7 @@
 #include "header.h"
 
+int status = 0;
+
 /**
  * main - looping shell function, executing command if correctly entered
  * @ac: argument count
@@ -18,13 +20,14 @@ int main(int ac __attribute__((unused)), char **av)
 		signal(SIGINT, signalHandler);
 		if (isatty(STDIN_FILENO))
 			type_prompt();
-		read_cmd(param);
+		if (read_cmd(param) == -1)
+			break;
 		pid = fork();
 		if (pid < 0)
 			fork_fail(pid);
 		else if (pid > 0)
 		{
-			hmm = wait(NULL);
+			hmm = wait(&status);
 			if (hmm == -1)
 				return (-1);
 		}
@@ -37,5 +40,5 @@ int main(int ac __attribute__((unused)), char **av)
 		}
 		i++;
 	}
-	return (-1);
+	return (status);
 }

@@ -3,8 +3,10 @@
 /**
  * read_cmd - reads user input for command to execute, along with parameters
  * @param: array of text strings of parameters
+ *
+ * Return: the number of characters read, -1 if error.
  */
-void read_cmd(char **param)
+int read_cmd(char **param)
 {
 	char *lineptr, **tok, *tmp, *token;
 	ssize_t gline; size_t n = 0;
@@ -23,7 +25,7 @@ void read_cmd(char **param)
 	if (gline == -1)
 	{
 		free(tok); free(tmp);
-		exit(EXIT_FAILURE);
+		return(-1);
 	}
 	if (_strncmp(lineptr, "exit", 4) == 0)
 		_kill(lineptr, tmp, tok);
@@ -44,4 +46,5 @@ void read_cmd(char **param)
 		param[j] = tok[j];
 	param[j] = NULL;
 	free(tok); free(tmp); free(lineptr);
+	return(gline);
 }
