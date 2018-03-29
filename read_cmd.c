@@ -25,7 +25,7 @@ int read_cmd(char **param)
 	if (gline == -1)
 	{
 		free(tok); free(tmp);
-		return(-1);
+		return (-1);
 	}
 	if (_strncmp(lineptr, "exit", 4) == 0)
 		_kill(lineptr, tmp, tok);
@@ -46,5 +46,5 @@ int read_cmd(char **param)
 		param[j] = tok[j];
 	param[j] = NULL;
 	free(tok); free(tmp); free(lineptr);
-	return(gline);
+	return (gline);
 }

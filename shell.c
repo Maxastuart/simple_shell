@@ -1,7 +1,5 @@
 #include "header.h"
 
-int status = 0;
-
 /**
  * main - looping shell function, executing command if correctly entered
  * @ac: argument count
@@ -13,7 +11,7 @@ int main(int ac __attribute__((unused)), char **av)
 {
 	pid_t hmm, pid;
 	char cmd[100], *param[100];
-	int i = 1;
+	int i = 1, status = 0;
 
 	while (1)
 	{
@@ -39,7 +37,7 @@ int main(int ac __attribute__((unused)), char **av)
 			return (execve(cmd, param, NULL));
 		}
 		if (isatty(STDIN_FILENO) == 0)
-			return(status);
+			return (status);
 		i++;
 	}
 	return (status);

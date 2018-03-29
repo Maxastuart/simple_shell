@@ -19,8 +19,6 @@
 
 extern char **environ;
 
-extern int status;
-
 void type_prompt(void);
 int read_cmd(char **param);
 int location_check(char *cmd);
