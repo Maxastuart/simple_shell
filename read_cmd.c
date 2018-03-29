@@ -7,8 +7,7 @@
 void read_cmd(char **param)
 {
 	char *lineptr, **tok, *tmp, *token;
-	ssize_t gline;
-	size_t n = 0;
+	ssize_t gline; size_t n = 0;
 	int i = 0, j = 0;
 
 	tok = malloc(128 * sizeof(char *));
@@ -26,6 +25,8 @@ void read_cmd(char **param)
 		free(tok); free(tmp);
 		exit(EXIT_FAILURE);
 	}
+	if (isatty(STDIN_FILENO) == 0)
+		_kill(lineptr, tmp, tok);
 	if (_strncmp(lineptr, "exit", 4) == 0)
 		_kill(lineptr, tmp, tok);
 	while (lineptr[j] != '\n')
