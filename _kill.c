@@ -12,5 +12,5 @@ void _kill(char *lineptr, char *tmp, char **tok)
 	free(tmp);
 	free(tok);
 	free(lineptr);
-	_exit(1);
+	_exit(0);
 }
