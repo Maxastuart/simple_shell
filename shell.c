@@ -36,8 +36,6 @@ int main(int ac __attribute__((unused)), char **av)
 				write_nope(av[0], i, param[0]);
 			return (execve(cmd, param, NULL));
 		}
-		if (isatty(STDIN_FILENO) == 0)
-			return (status);
 		i++;
 	}
 	return (status);
